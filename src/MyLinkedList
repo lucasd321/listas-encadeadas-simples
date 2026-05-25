@@ -1,0 +1,257 @@
+public class MyLinkedList<T> implements LinkedListTAD<T> {
+
+    private Node<T> head;
+    private Node<T> tail;
+    private int size;
+
+
+    public MyLinkedList() {
+        head = null;
+        tail = null;
+        size = 0;
+    }
+
+
+    public Node<T> getHead() { return head; }
+
+
+    private int compare(T a, T b) {
+        return ((Comparable<T>) a).compareTo(b);
+    }
+
+    @Override
+    public void addFirst(T element) {
+        Node<T> newNode = new Node<>(element);
+        if (isEmpty()) {
+            head = newNode;
+            tail = newNode;
+        } else {
+            newNode.next = head;
+            head = newNode;
+        }
+        size++;
+    }
+
+    @Override
+    public void addLast(T element) {
+        Node<T> newNode = new Node<>(element);
+        if (isEmpty()) {
+            head = newNode;
+            tail = newNode;
+        } else {
+            tail.next = newNode;
+            tail = newNode;
+        }
+        size++;
+    }
+
+    @Override
+    public T removeFirst() {
+        if (isEmpty()) throw new java.util.NoSuchElementException("Lista vazia.");
+        T value = head.element;
+        head = head.next;
+        if (head == null) tail = null;
+        size--;
+        return value;
+    }
+
+    @Override
+    public T removeLast() {
+        if (isEmpty()) throw new java.util.NoSuchElementException("Lista vazia.");
+        T value = tail.element;
+        if (head == tail) {
+            head = null;
+            tail = null;
+        } else {
+            Node<T> current = head;
+            while (current.next != tail) {
+                current = current.next;
+            }
+            current.next = null;
+            tail = current;
+        }
+        size--;
+        return value;
+    }
+
+    @Override
+    public T peekFirst() {
+        if (isEmpty()) throw new java.util.NoSuchElementException("Lista vazia.");
+        return head.element;
+    }
+
+    @Override
+    public T peekLast() {
+        if (isEmpty()) throw new java.util.NoSuchElementException("Lista vazia.");
+        return tail.element;
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return head == null;
+    }
+
+    @Override
+    public int size() {
+        return size;
+    }
+
+
+    @Override
+    public void addAscendingSorted(T element) {
+        Node<T> newNode = new Node<>(element);
+
+        if (isEmpty()) {
+            head = newNode;
+            tail = newNode;
+            size++;
+            return;
+        }
+
+        if (compare(element, head.element) <= 0) {
+            newNode.next = head;
+            head = newNode;
+            size++;
+            return;
+        }
+
+        Node<T> prev    = head;
+        Node<T> current = head.next;
+        while (current != null && compare(current.element, element) < 0) {
+            prev    = current;
+            current = current.next;
+        }
+
+        prev.next    = newNode;
+        newNode.next = current;
+
+        if (current == null) {
+            tail = newNode;
+        }
+
+        size++;
+    }
+
+    @Override
+    public void deleteWithoutPredecessor(Node<T> p) {
+        if (p == null || p.next == null) {
+            throw new IllegalArgumentException("P não pode ser nulo ou o último nó.");
+        }
+
+        Node<T> toRemove = p.next;
+        p.element = toRemove.element;
+        p.next = toRemove.next;
+        if (toRemove == tail) {
+            tail = p;
+        }
+
+        size--;
+    }
+
+    @Override
+    public void reverse() {
+        if (isEmpty() || head == tail) return;
+
+        Node<T> prev    = null;
+        Node<T> current = head;
+        Node<T> next;
+
+        tail = head;
+
+        while (current != null) {
+            next         = current.next;
+            current.next = prev;        
+            prev         = current;     
+            current      = next;       
+        }
+
+        head = prev;
+    }
+
+    @Override
+    public void mergeSorted(MyLinkedList<T> other) {
+        if (other == null || other.isEmpty()) return;
+        if (this.isEmpty()) {
+            this.head = other.head;
+            this.tail = other.tail;
+            this.size = other.size;
+            return;
+        }
+
+        Node<T> dummy   = new Node<>(null);
+        Node<T> current = dummy;
+
+        Node<T> a = this.head;
+        Node<T> b = other.head;
+
+        while (a != null && b != null) {
+            if (compare(a.element, b.element) <= 0) {
+                current.next = a;
+                a = a.next;
+            } else {
+                current.next = b;
+                b = b.next;
+            }
+            current = current.next;
+        }
+
+        current.next = (a != null) ? a : b;
+
+        while (current.next != null) {
+            current = current.next;
+        }
+
+        this.head = dummy.next;
+        this.tail = current;
+        this.size = this.size + other.size;
+    }
+
+    @Override
+    public void removeNthFromEnd(int n) {
+        if (isEmpty()) throw new java.util.NoSuchElementException("Lista vazia.");
+        if (n <= 0)    throw new IllegalArgumentException("n deve ser maior que zero.");
+
+        Node<T> fast = head;
+        Node<T> slow = head;
+
+        for (int i = 0; i < n; i++) {
+            if (fast == null) throw new IllegalArgumentException("n maior que o tamanho da lista.");
+            fast = fast.next;
+        }
+
+        if (fast == null) {
+            head = head.next;
+            if (head == null) tail = null;
+            size--;
+            return;
+        }
+
+        while (fast.next != null) {
+            fast = fast.next;
+            slow = slow.next;
+        }
+
+        Node<T> toRemove = slow.next;
+        slow.next = toRemove.next;
+
+        if (toRemove == tail) {
+            tail = slow;
+        }
+
+        size--;
+    }
+
+    @Override
+    public String toString() {
+        if (isEmpty()) return "[ ]";
+        StringBuilder sb = new StringBuilder("[ ");
+        Node<T> current = head;
+        while (current != null) {
+            sb.append(current.element);
+            if (current.next != null) sb.append(" -> ");
+            current = current.next;
+        }
+        sb.append(" ]");
+        return sb.toString();
+    }
+}
