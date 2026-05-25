@@ -1,3 +1,42 @@
+# MyArrayList - Implementação de Lista Sequencial
+
+> Implementação do Tipo Abstrato de Dados (TAD) de uma Lista Sequencial (Array-Based List) em Java.
+
+Este repositório contém as operações fundamentais de manipulação de dados, a lógica de redimensionamento dinâmico e os algoritmos clássicos de gerenciamento de arrays para uma estrutura personalizada de Lista Sequencial.
+
+## ⚙️ Como funciona
+
+Uma Lista Sequencial é uma estrutura de dados linear onde os elementos são armazenados em posições contíguas de memória, utilizando um array interno como base.
+
+* Ao contrário de um array padrão de tamanho fixo, essa estrutura gerencia sua própria capacidade de forma abstrata.
+* Ela utiliza um array interno para guardar os dados e um número inteiro para rastrear o tamanho atual (`size`), ou seja, o número de posições válidas e ocupadas.
+* Quando o array interno atinge sua capacidade máxima, a estrutura cria automaticamente um novo array maior e copia os elementos existentes, dando a ilusão de uma lista que se expande infinitamente.
+* Os elementos são acessados diretamente através de índices numéricos, começando do zero.
+
+## 💡 O porquê: vantagens e utilidade
+
+Implementar essa estrutura de dados evidencia os compromissos (trade-offs) entre o gerenciamento de memória e a velocidade de processamento. Aqui estão os principais motivos pelos quais as listas sequenciais são amplamente utilizadas:
+
+* **Acesso instantâneo (Indexação):** Recuperar um elemento pelo seu índice tem complexidade de tempo `O(1)`. Não é necessário percorrer a estrutura para encontrar o item em uma posição específica.
+* **Eficiência de cache:** Como a memória é contígua, as CPUs modernas conseguem pré-carregar os dados de forma altamente eficiente, tornando laços de repetição (loops) e iterações significativamente mais rápidos do que em estruturas baseadas em ponteiros.
+* **Baixo consumo de memória extra:** Não há necessidade de alocar memória adicional para ponteiros ou referências (como o nó `next` em listas encadeadas). A estrutura armazena apenas os dados reais.
+
+## 🚀 Quando usar em aplicações
+
+No desenvolvimento de software moderno, estruturas baseadas em arrays dinâmicos (como o `ArrayList` nativo do Java) costumam ser a escolha padrão para dados lineares. Use conceitos de listas sequenciais em cenários como:
+
+* **Playlists de música e filas de mídia:** Aplicações que exigem indexação para pular diretamente para uma faixa específica, embaralhar elementos eficientemente ou ler dados sequencialmente sem inserções frequentes no meio da lista.
+* **Visualização de dados e tabelas:** Renderização de placares, catálogos de produtos ou painéis onde o sistema lê os dados com muito mais frequência do que os modifica.
+* **Iterações de alta performance:** Sistemas que processam lotes de dados e exigem máxima eficiência de cache da CPU, onde a memória contígua é um requisito estrito.
+
+## 📂 Estrutura do projeto
+
+* `ArrayListTAD.java`: Interface que define o contrato para as operações da estrutura de dados (ex: adicionar, remover, buscar, tamanho).
+* `MyArrayList.java`: Implementação concreta da interface. Esta classe gerencia o array interno, o contador `size` e a lógica de redimensionamento dinâmico do array (expandindo a capacidade quando cheio).
+* `Main.java`: Interface de linha de comando (CLI) interativa para testar as funcionalidades, adicionar ou remover elementos e visualizar o comportamento da estrutura e as mudanças de capacidade em tempo real.
+
+--
+
 # MyArrayList - Sequential List Implementation
 
 > Abstract Data Type (ADT) implementation of a Sequential List (Array-Based List) in Java.
